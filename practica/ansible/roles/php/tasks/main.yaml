@@ -1,0 +1,39 @@
+- name: Instalar los siguientes paquetes
+  apt:
+    name: "{{ item }}"
+    update_cache: no
+    state: latest
+  loop:
+    - php
+    - php-fpm
+
+- name: Modificar línea en www.conf para activar socket tcp fpm
+  lineinfile:
+    path: /etc/php/8.2/fpm/pool.d/www.conf
+    regexp: '^listen = /run/php/php8.2-fpm.sock'
+    line: 'listen = 127.0.0.1:9000'
+  notify: Reiniciar PHP-FPM
+
+- name: Create documentroot if it does not exist
+  ansible.builtin.file:
+    path: /{{item["datos"]["documentroot"]}}
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: '0755'
+  with_items:
+    - "{{virtualhosts}}"
+
+- name: Copy info.php
+  copy:
+    src: info.php
+    dest: /{{item["datos"]["documentroot"]}}/info.php
+    owner: www-data
+    group: www-data
+    mode: 0644
+  with_items:
+    - "{{virtualhosts}}"
+
+
+
+

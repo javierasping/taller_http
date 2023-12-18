@@ -1,0 +1,30 @@
+server {
+    listen 80;
+    server_name {{ item.datos.nameserver }};
+
+    location /directorio {
+        rewrite ^/directorio(.*)$ /nuevodirectorio$1 permanent;
+    }
+
+    server_name {{ item.datos.nameserver }};
+    server_name_in_redirect off;
+
+    root {{ item.datos.documentroot }};
+    index index.php index.html index.htm;
+
+    error_log {{ item.datos.errorlog }}.log;
+    access_log {{ item.datos.accesslog }}.log combined;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        #fastcgi_pass unix:/run/php/php8.2-fpm.sock;
+        fastcgi_pass localhost:9000;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+}
+

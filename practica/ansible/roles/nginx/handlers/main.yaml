@@ -1,0 +1,9 @@
+- name: restart nginx
+  service: name=nginx state=restarted
+
+- name: Reiniciar PHP-FPM
+  service:
+    name: php8.2-fpm
+    state: restarted  
+  
+  

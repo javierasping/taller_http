@@ -1,0 +1,34 @@
+# apache2
+virtualhosts:
+  - name: vhost1
+    datos:
+      nameserver: www.app1FJCD.org
+      documentroot: /var/www/app1
+      errorlog: error_app1FJCD
+      accesslog: access_app1FJCD
+
+  - name: vhost2
+    datos:
+      nameserver: www.app2FJCD.org
+      documentroot: /var/www/app2
+      errorlog: error_app2FJCD
+      accesslog: access_app2FJCD
+
+  - name: vhost3
+    datos:
+      nameserver: www.app3FJCD.org
+      documentroot: /var/www/app3
+      errorlog: error_app3FJCD
+      accesslog: access_app3FJCD
+ 
+
+mods_enabled:
+  - rewrite
+
+dis_virtualhosts:
+  - name: vhost3
+    datos:
+      nameserver: www.app3FJCD.org
+      documentroot: /var/www/app3
+      errorlog: error_app3FJCD
+      accesslog: access_app3FJCD
